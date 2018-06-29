@@ -120,9 +120,16 @@
     <None Include="res\score_indicator.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\55.bmp" />
+    <Image Include="res\bitmap2.bmp" />
     <Image Include="res\score_indicator.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="score_indicator.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

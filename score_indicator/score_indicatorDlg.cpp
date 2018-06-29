@@ -1,4 +1,3 @@
-fnfg
 // score_indicatorDlg.cpp : 实现文件
 //
 
@@ -51,6 +50,12 @@ END_MESSAGE_MAP()
 
 Cscore_indicatorDlg::Cscore_indicatorDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(Cscore_indicatorDlg::IDD, pParent)
+	, m_ch1("")
+	, m_ch2("")
+	, m_ch3("")
+	, m_ch4("")
+	, m_ch5("")
+
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -65,6 +70,8 @@ BEGIN_MESSAGE_MAP(Cscore_indicatorDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_TIMER()
 	ON_WM_QUERYDRAGICON()
+	ON_WM_CTLCOLOR()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 // Cscore_indicatorDlg 消息处理程序
@@ -100,8 +107,10 @@ BOOL Cscore_indicatorDlg::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化代码
 	DoLoadConf();
-
+	GetClientRect(&m_rect);
+	SetItemFont();
 	SetTimer(UPDATE_SCORE, 1000, NULL);
+	ShowWindow(SW_MAXIMIZE);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -153,8 +162,9 @@ void Cscore_indicatorDlg::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == UPDATE_SCORE)
 	{
 		DoLoadConf();
+		//SetItemFont();
+		//UpdateWindow();
 	}
-
 	CDialogEx::OnTimer(nIDEvent);
 }
 
@@ -171,15 +181,191 @@ void Cscore_indicatorDlg::DoLoadConf()
 	CString section(_T("SCORE"));
 	TCHAR lpTemp[MAX_PATH] = { 0 };
 	GetPrivateProfileString(section, _T("CH1"), _T("80"), lpTemp, 10, config_path.GetBuffer(0));
-	GetDlgItem(IDC_STATIC_1)->SetWindowText(lpTemp);
+	CString cs;
+	cs.Format(_T("%s"), lpTemp);
+	if (cs.Compare(m_ch1) != 0)
+	{	
+		m_ch1 = cs;
+		GetDlgItem(IDC_STATIC_1)->SetWindowText(lpTemp);
+		CRect rc;
+		GetDlgItem(IDC_STATIC_1)->GetWindowRect(&rc);
+		//转换为相对坐标
+		ScreenToClient(&rc);
+		//刷新指定区域,注意第2个参数为真,即刷新背景
+		InvalidateRect(&rc, TRUE);
+	}
+
+
 	GetPrivateProfileString(section, _T("CH2"), _T("80"), lpTemp, 10, config_path.GetBuffer(0));
-	GetDlgItem(IDC_STATIC_2)->SetWindowText(lpTemp);
+	cs.Format(_T("%s"), lpTemp);
+	if (cs.Compare(m_ch2) != 0)
+	{
+		m_ch2 = cs;
+		GetDlgItem(IDC_STATIC_2)->SetWindowText(lpTemp);
+		CRect rc;
+		GetDlgItem(IDC_STATIC_2)->GetWindowRect(&rc);
+		//转换为相对坐标
+		ScreenToClient(&rc);
+		//刷新指定区域,注意第2个参数为真,即刷新背景
+		InvalidateRect(&rc, TRUE);
+	}
 	GetPrivateProfileString(section, _T("CH3"), _T("80"), lpTemp, 10, config_path.GetBuffer(0));
-	GetDlgItem(IDC_STATIC_3)->SetWindowText(lpTemp);
+	cs.Format(_T("%s"), lpTemp);
+	if (cs.Compare(m_ch3) != 0)
+	{
+		m_ch3 = cs;
+		GetDlgItem(IDC_STATIC_3)->SetWindowText(lpTemp);
+		CRect rc;
+		GetDlgItem(IDC_STATIC_3)->GetWindowRect(&rc);
+		//转换为相对坐标
+		ScreenToClient(&rc);
+		//刷新指定区域,注意第2个参数为真,即刷新背景
+		InvalidateRect(&rc, TRUE);
+	}
 	GetPrivateProfileString(section, _T("CH4"), _T("80"), lpTemp, 10, config_path.GetBuffer(0));
-	GetDlgItem(IDC_STATIC_4)->SetWindowText(lpTemp);
+	cs.Format(_T("%s"), lpTemp);
+	if (cs.Compare(m_ch4) != 0)
+	{
+		m_ch4 = cs;
+		GetDlgItem(IDC_STATIC_4)->SetWindowText(lpTemp);
+		CRect rc;
+		GetDlgItem(IDC_STATIC_4)->GetWindowRect(&rc);
+		//转换为相对坐标
+		ScreenToClient(&rc);
+		//刷新指定区域,注意第2个参数为真,即刷新背景
+		InvalidateRect(&rc, TRUE);
+	}
 	GetPrivateProfileString(section, _T("CH5"), _T("80"), lpTemp, 10, config_path.GetBuffer(0));
-	GetDlgItem(IDC_STATIC_5)->SetWindowText(lpTemp);
+	cs.Format(_T("%s"), lpTemp);
+	if (cs.Compare(m_ch5) != 0)
+	{
+		m_ch5 = cs;
+		GetDlgItem(IDC_STATIC_5)->SetWindowText(lpTemp);
+		CRect rc;
+		GetDlgItem(IDC_STATIC_5)->GetWindowRect(&rc);
+		//转换为相对坐标
+		ScreenToClient(&rc);
+		//刷新指定区域,注意第2个参数为真,即刷新背景
+		InvalidateRect(&rc, TRUE);
+	}
+
+	
+	
+
+	//GetDlgItem(IDC_STATIC_2)->GetWindowRect(&rc);
+	////转换为相对坐标
+	//ScreenToClient(&rc);
+	////刷新指定区域,注意第2个参数为真,即刷新背景
+	//InvalidateRect(&rc, TRUE);
+
+	//GetDlgItem(IDC_STATIC_3)->GetWindowRect(&rc);
+	////转换为相对坐标
+	//ScreenToClient(&rc);
+	////刷新指定区域,注意第2个参数为真,即刷新背景
+	//InvalidateRect(&rc, TRUE);
+
+	//GetDlgItem(IDC_STATIC_4)->GetWindowRect(&rc);
+	////转换为相对坐标
+	//ScreenToClient(&rc);
+	////刷新指定区域,注意第2个参数为真,即刷新背景
+	//InvalidateRect(&rc, TRUE);
+
+	//GetDlgItem(IDC_STATIC_5)->GetWindowRect(&rc);
+	////转换为相对坐标
+	//ScreenToClient(&rc);
+	////刷新指定区域,注意第2个参数为真,即刷新背景
+	//InvalidateRect(&rc, TRUE);
+
 	UpdateData(FALSE);
 }
 
+void Cscore_indicatorDlg::SetItemFont()
+{
+	m_font.CreatePointFont(500, _T("Arial"));
+
+	GetDlgItem(IDC_STATIC_1)->SetFont(&m_font);
+	GetDlgItem(IDC_STATIC_2)->SetFont(&m_font);
+	GetDlgItem(IDC_STATIC_3)->SetFont(&m_font);
+	GetDlgItem(IDC_STATIC_4)->SetFont(&m_font);
+	GetDlgItem(IDC_STATIC_5)->SetFont(&m_font);
+
+	GetDlgItem(IDC_STATIC_11)->SetFont(&m_font);
+	GetDlgItem(IDC_STATIC_12)->SetFont(&m_font);
+	GetDlgItem(IDC_STATIC_13)->SetFont(&m_font);
+	GetDlgItem(IDC_STATIC_14)->SetFont(&m_font);
+	GetDlgItem(IDC_STATIC_15)->SetFont(&m_font);
+}
+
+
+
+HBRUSH Cscore_indicatorDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	// TODO:  在此更改 DC 的任何特性
+	pDC->SetTextColor(RGB(109, 192, 173));
+
+	static CBrush gBr;
+	static bool isInited = false;
+	if (!isInited)
+	{
+		CBitmap bitmap;
+		bitmap.LoadBitmap(IDB_BITMAP2);
+		gBr.CreatePatternBrush(&bitmap);
+		COLORREF clearColor = -1;
+		bitmap.DeleteObject();
+		isInited = true;
+	}
+	if (pWnd == this)
+	{
+		pDC->SetBkMode(TRANSPARENT);
+		return gBr; //主窗口背景使用这个背景刷
+	}
+	else
+	{
+		pDC->SetBkMode(TRANSPARENT);
+		return   (HBRUSH)::GetStockObject(NULL_BRUSH); //其他控件使用透明背景
+	}
+
+	return hbr;
+}
+
+
+void Cscore_indicatorDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+
+	// TODO:  在此处添加消息处理程序代码
+	if (nType == 1) 
+		return;//最小化则什么都不做  
+	CWnd *pWnd[10] = {0};
+	pWnd[0] = GetDlgItem(IDC_STATIC_1);
+	pWnd[1] = GetDlgItem(IDC_STATIC_2);
+	pWnd[2] = GetDlgItem(IDC_STATIC_3);
+	pWnd[3] = GetDlgItem(IDC_STATIC_4);
+	pWnd[4] = GetDlgItem(IDC_STATIC_5);
+	pWnd[5] = GetDlgItem(IDC_STATIC_11);
+	pWnd[6] = GetDlgItem(IDC_STATIC_12);
+	pWnd[7] = GetDlgItem(IDC_STATIC_13);
+	pWnd[8] = GetDlgItem(IDC_STATIC_14);
+	pWnd[9] = GetDlgItem(IDC_STATIC_15);
+
+	for (size_t i = 0; i < 10; i++)
+	{
+		if (pWnd[i])  //判断是否为空，因为对话框创建时会调用此函数，而当时控件还未创建
+		{
+			CRect rect;   //获取控件变化前的大小 
+			pWnd[i]->GetWindowRect(&rect);
+			ScreenToClient(&rect);//将控件大小转换为在对话框中的区域坐标
+
+			//    cx/m_rect.Width()为对话框在横向的变化比例
+			rect.left = rect.left*cx / m_rect.Width();//调整控件大小
+			rect.right = rect.right*cx / m_rect.Width();
+			rect.top = rect.top*cy / m_rect.Height();
+			rect.bottom = rect.bottom*cy / m_rect.Height();
+			pWnd[i]->MoveWindow(rect);//设置控件大小
+		}
+	}
+
+	GetClientRect(&m_rect);
+}

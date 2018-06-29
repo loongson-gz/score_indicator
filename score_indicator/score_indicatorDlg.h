@@ -32,4 +32,16 @@ protected:
 	DECLARE_MESSAGE_MAP()
 private:
 	void DoLoadConf();
+	void SetItemFont();
+	CFont m_font;
+public:
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	CRect m_rect;
+	CString m_ch1;
+	CString m_ch2;
+	CString m_ch3;
+	CString m_ch4;
+	CString m_ch5;
+
 };
