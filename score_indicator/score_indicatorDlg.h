@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <gdiplus.h>
+#pragma comment(lib,"gdiplus.lib")
 
 // Cscore_indicatorDlg 对话框
 class Cscore_indicatorDlg : public CDialogEx
@@ -23,6 +25,7 @@ public:
 protected:
 	HICON m_hIcon;
 
+	void OnOK();
 	// 生成的消息映射函数
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
@@ -39,4 +42,9 @@ public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	CRect m_rect;
 	CString m_ch[5];
+
+	Gdiplus::GdiplusStartupInput m_GdiplusStarupInput;
+	ULONG_PTR m_uGdiplusToken;
+
+	Gdiplus::Image* m_img;
 };

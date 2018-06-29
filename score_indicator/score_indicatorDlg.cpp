@@ -53,6 +53,10 @@ Cscore_indicatorDlg::Cscore_indicatorDlg(CWnd* pParent /*=NULL*/)
 	, m_ch()
 
 {
+	Gdiplus::GdiplusStartup(&m_uGdiplusToken, &m_GdiplusStarupInput, nullptr);
+
+	//在不需要GDI + 的时候卸载它
+	//Gdiplus::GdiplusShutdown(m_uGdiplusToken);
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
@@ -71,6 +75,11 @@ BEGIN_MESSAGE_MAP(Cscore_indicatorDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 // Cscore_indicatorDlg 消息处理程序
+
+void Cscore_indicatorDlg::OnOK()
+{
+	return;
+}
 
 BOOL Cscore_indicatorDlg::OnInitDialog()
 {
@@ -102,6 +111,13 @@ BOOL Cscore_indicatorDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO:  在此添加额外的初始化代码
+	char buf[256] = "";
+	GetCurrentDirectoryA(256, buf);
+	sprintf_s(buf, "%s\\res\\55.bmp", buf);
+	CStringW s;   //转为宽字符
+	s = buf;
+	m_img = Gdiplus::Image::FromFile(s);  //加载图片
+
 	DoLoadConf();
 	GetClientRect(&m_rect);
 	SetItemFont();
@@ -130,6 +146,12 @@ void Cscore_indicatorDlg::OnSysCommand(UINT nID, LPARAM lParam)
 
 void Cscore_indicatorDlg::OnPaint()
 {
+	CPaintDC dc(this);
+	CRect rect = { 0 };
+	GetClientRect(&rect);   //获取客户区大小
+	Gdiplus::Graphics g(dc);
+	g.DrawImage(m_img, 0, 0, rect.Width(), rect.Height());
+
 	if (IsIconic())
 	{
 		CPaintDC dc(this); // 用于绘制的设备上下文
