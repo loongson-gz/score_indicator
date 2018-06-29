@@ -50,11 +50,7 @@ END_MESSAGE_MAP()
 
 Cscore_indicatorDlg::Cscore_indicatorDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(Cscore_indicatorDlg::IDD, pParent)
-	, m_ch1("")
-	, m_ch2("")
-	, m_ch3("")
-	, m_ch4("")
-	, m_ch5("")
+	, m_ch()
 
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -179,102 +175,33 @@ void Cscore_indicatorDlg::DoLoadConf()
 {
 	CString config_path(_T("./config.ini"));
 	CString section(_T("SCORE"));
-	TCHAR lpTemp[MAX_PATH] = { 0 };
-	GetPrivateProfileString(section, _T("CH1"), _T("80"), lpTemp, 10, config_path.GetBuffer(0));
-	CString cs;
-	cs.Format(_T("%s"), lpTemp);
-	if (cs.Compare(m_ch1) != 0)
-	{	
-		m_ch1 = cs;
-		GetDlgItem(IDC_STATIC_1)->SetWindowText(lpTemp);
-		CRect rc;
-		GetDlgItem(IDC_STATIC_1)->GetWindowRect(&rc);
-		//转换为相对坐标
-		ScreenToClient(&rc);
-		//刷新指定区域,注意第2个参数为真,即刷新背景
-		InvalidateRect(&rc, TRUE);
-	}
+	CWnd *pWnd[5] = {0};
+	pWnd[0] = GetDlgItem(IDC_STATIC_1);
+	pWnd[1] = GetDlgItem(IDC_STATIC_2);
+	pWnd[2] = GetDlgItem(IDC_STATIC_3);
+	pWnd[3] = GetDlgItem(IDC_STATIC_4);
+	pWnd[4] = GetDlgItem(IDC_STATIC_5);
 
-
-	GetPrivateProfileString(section, _T("CH2"), _T("80"), lpTemp, 10, config_path.GetBuffer(0));
-	cs.Format(_T("%s"), lpTemp);
-	if (cs.Compare(m_ch2) != 0)
+	for (size_t i = 0; i < 5; i++)
 	{
-		m_ch2 = cs;
-		GetDlgItem(IDC_STATIC_2)->SetWindowText(lpTemp);
-		CRect rc;
-		GetDlgItem(IDC_STATIC_2)->GetWindowRect(&rc);
-		//转换为相对坐标
-		ScreenToClient(&rc);
-		//刷新指定区域,注意第2个参数为真,即刷新背景
-		InvalidateRect(&rc, TRUE);
+		TCHAR lpTemp[MAX_PATH] = { 0 };
+		CString ch;
+		ch.Format(_T("CH%d"),(i+1));
+		GetPrivateProfileString(section, ch, _T("80"), lpTemp, 10, config_path.GetBuffer(0));
+		CString cs;
+		cs.Format(_T("%s"), lpTemp);
+		if (cs.Compare(m_ch[i]) != 0 && pWnd[i])
+		{	
+			m_ch[i] = cs;
+			pWnd[i]->SetWindowText(lpTemp);
+			CRect rc;
+			pWnd[i]->GetWindowRect(&rc);
+			//转换为相对坐标
+			ScreenToClient(&rc);
+			//刷新指定区域,注意第2个参数为真,即刷新背景
+			InvalidateRect(&rc, TRUE);
+		}
 	}
-	GetPrivateProfileString(section, _T("CH3"), _T("80"), lpTemp, 10, config_path.GetBuffer(0));
-	cs.Format(_T("%s"), lpTemp);
-	if (cs.Compare(m_ch3) != 0)
-	{
-		m_ch3 = cs;
-		GetDlgItem(IDC_STATIC_3)->SetWindowText(lpTemp);
-		CRect rc;
-		GetDlgItem(IDC_STATIC_3)->GetWindowRect(&rc);
-		//转换为相对坐标
-		ScreenToClient(&rc);
-		//刷新指定区域,注意第2个参数为真,即刷新背景
-		InvalidateRect(&rc, TRUE);
-	}
-	GetPrivateProfileString(section, _T("CH4"), _T("80"), lpTemp, 10, config_path.GetBuffer(0));
-	cs.Format(_T("%s"), lpTemp);
-	if (cs.Compare(m_ch4) != 0)
-	{
-		m_ch4 = cs;
-		GetDlgItem(IDC_STATIC_4)->SetWindowText(lpTemp);
-		CRect rc;
-		GetDlgItem(IDC_STATIC_4)->GetWindowRect(&rc);
-		//转换为相对坐标
-		ScreenToClient(&rc);
-		//刷新指定区域,注意第2个参数为真,即刷新背景
-		InvalidateRect(&rc, TRUE);
-	}
-	GetPrivateProfileString(section, _T("CH5"), _T("80"), lpTemp, 10, config_path.GetBuffer(0));
-	cs.Format(_T("%s"), lpTemp);
-	if (cs.Compare(m_ch5) != 0)
-	{
-		m_ch5 = cs;
-		GetDlgItem(IDC_STATIC_5)->SetWindowText(lpTemp);
-		CRect rc;
-		GetDlgItem(IDC_STATIC_5)->GetWindowRect(&rc);
-		//转换为相对坐标
-		ScreenToClient(&rc);
-		//刷新指定区域,注意第2个参数为真,即刷新背景
-		InvalidateRect(&rc, TRUE);
-	}
-
-	
-	
-
-	//GetDlgItem(IDC_STATIC_2)->GetWindowRect(&rc);
-	////转换为相对坐标
-	//ScreenToClient(&rc);
-	////刷新指定区域,注意第2个参数为真,即刷新背景
-	//InvalidateRect(&rc, TRUE);
-
-	//GetDlgItem(IDC_STATIC_3)->GetWindowRect(&rc);
-	////转换为相对坐标
-	//ScreenToClient(&rc);
-	////刷新指定区域,注意第2个参数为真,即刷新背景
-	//InvalidateRect(&rc, TRUE);
-
-	//GetDlgItem(IDC_STATIC_4)->GetWindowRect(&rc);
-	////转换为相对坐标
-	//ScreenToClient(&rc);
-	////刷新指定区域,注意第2个参数为真,即刷新背景
-	//InvalidateRect(&rc, TRUE);
-
-	//GetDlgItem(IDC_STATIC_5)->GetWindowRect(&rc);
-	////转换为相对坐标
-	//ScreenToClient(&rc);
-	////刷新指定区域,注意第2个参数为真,即刷新背景
-	//InvalidateRect(&rc, TRUE);
 
 	UpdateData(FALSE);
 }
