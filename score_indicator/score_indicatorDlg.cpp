@@ -194,6 +194,7 @@ void Cscore_indicatorDlg::DoLoadConf()
 		{	
 			m_ch[i] = cs;
 			pWnd[i]->SetWindowText(lpTemp);
+			//以下操作用以解决设置为透明背景时文字有重叠的BUG
 			CRect rc;
 			pWnd[i]->GetWindowRect(&rc);
 			//转换为相对坐标
