@@ -47,4 +47,5 @@ public:
 	ULONG_PTR m_uGdiplusToken;
 
 	Gdiplus::Image* m_img;
+	int m_iFontSize;
 };

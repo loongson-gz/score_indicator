@@ -51,6 +51,7 @@ END_MESSAGE_MAP()
 Cscore_indicatorDlg::Cscore_indicatorDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(Cscore_indicatorDlg::IDD, pParent)
 	, m_ch()
+	, m_iFontSize(50)
 
 {
 	Gdiplus::GdiplusStartup(&m_uGdiplusToken, &m_GdiplusStarupInput, nullptr);
@@ -196,6 +197,9 @@ HCURSOR Cscore_indicatorDlg::OnQueryDragIcon()
 void Cscore_indicatorDlg::DoLoadConf()
 {
 	CString config_path(_T("./config.ini"));
+
+	m_iFontSize = GetPrivateProfileInt(_T("FONT"), _T("size"), 50, config_path.GetBuffer(0));
+
 	CString section(_T("SCORE"));
 	CWnd *pWnd[5] = {0};
 	pWnd[0] = GetDlgItem(IDC_STATIC_1);
@@ -231,7 +235,23 @@ void Cscore_indicatorDlg::DoLoadConf()
 
 void Cscore_indicatorDlg::SetItemFont()
 {
-	m_font.CreatePointFont(500, _T("Arial"));
+	//m_font.CreatePointFont(500, _T("Arial"));
+	m_font.CreateFont(
+		m_iFontSize,               // nHeight
+		m_iFontSize,               // nWidth
+		0,                         // nEscapement
+		0,                         // nOrientation
+		FW_BOLD,                   // nWeight
+		FALSE,                     // bItalic
+		FALSE,                     // bUnderline
+		0,                         // cStrikeOut
+		SHIFTJIS_CHARSET,              // nCharSet
+		OUT_DEFAULT_PRECIS,        // nOutPrecision
+		CLIP_DEFAULT_PRECIS,       // nClipPrecision
+		DEFAULT_QUALITY,           // nQuality
+		DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily 
+		_T("Arial"));
+	///_T("MS UI Gothic"));
 
 	GetDlgItem(IDC_STATIC_1)->SetFont(&m_font);
 	GetDlgItem(IDC_STATIC_2)->SetFont(&m_font);
@@ -253,19 +273,19 @@ HBRUSH Cscore_indicatorDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  在此更改 DC 的任何特性
-	pDC->SetTextColor(RGB(109, 192, 173));
+	pDC->SetTextColor(RGB(255, 0, 0));
 
 	static CBrush gBr;
-	static bool isInited = false;
-	if (!isInited)
-	{
-		CBitmap bitmap;
-		bitmap.LoadBitmap(IDB_BITMAP2);
-		gBr.CreatePatternBrush(&bitmap);
-		COLORREF clearColor = -1;
-		bitmap.DeleteObject();
-		isInited = true;
-	}
+	//static bool isInited = false;
+	//if (!isInited)
+	//{
+	//	CBitmap bitmap;
+	//	bitmap.LoadBitmap(IDB_BITMAP2);
+	//	gBr.CreatePatternBrush(&bitmap);
+	//	COLORREF clearColor = -1;
+	//	bitmap.DeleteObject();
+	//	isInited = true;
+	//}
 	if (pWnd == this)
 	{
 		pDC->SetBkMode(TRANSPARENT);
