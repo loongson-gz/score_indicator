@@ -338,4 +338,5 @@ void Cscore_indicatorDlg::OnSize(UINT nType, int cx, int cy)
 	}
 
 	GetClientRect(&m_rect);
+	Invalidate(FALSE);
 }
